@@ -197,8 +197,8 @@ class XapianSearchBackend(BaseSearchBackend):
         if self.path != MEMORY_DB_NAME and not os.path.exists(self.path):
             os.makedirs(self.path)
 
-        self.flags = connection_options.get('FLAGS', DEFAULT_XAPIAN_FLAGS)
-        self.language = getattr(settings, 'HAYSTACK_XAPIAN_LANGUAGE', 'english')
+        self.flags = connection_options.get('FLAGS', getattr(settings, 'HAYSTACK_XAPIAN_FLAGS', DEFAULT_XAPIAN_FLAGS))
+        self.language = connection_options.get('LANGUAGE', getattr(settings, 'HAYSTACK_XAPIAN_LANGUAGE', 'english'))
 
         stemming_strategy_string = getattr(settings, 'HAYSTACK_XAPIAN_STEMMING_STRATEGY', 'STEM_SOME')
         self.stemming_strategy = getattr(xapian.QueryParser, stemming_strategy_string, xapian.QueryParser.STEM_SOME)
